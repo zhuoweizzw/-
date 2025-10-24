@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>班级相册 - 美好回忆</title>
+    <title>班级相册 - 本地图片版</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -185,17 +185,17 @@
             padding-bottom: 10px;
         }
         
-        .url-inputs {
+        .file-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
         
-        .url-input {
+        .file-input {
             margin-bottom: 20px;
         }
         
-        .url-input label {
+        .file-input label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
@@ -203,9 +203,9 @@
             font-size: 1.1rem;
         }
         
-        .url-input input {
+        .file-input input[type="file"] {
             width: 100%;
-            padding: 14px 18px;
+            padding: 10px;
             border: 1px solid #d5dbdb;
             border-radius: 12px;
             font-size: 1rem;
@@ -213,7 +213,18 @@
             background: rgba(255, 255, 255, 0.8);
         }
         
-        .url-input input:focus {
+        .file-input input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d5dbdb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.8);
+            margin-top: 8px;
+        }
+        
+        .file-input input:focus {
             border-color: #3498db;
             outline: none;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
@@ -282,7 +293,7 @@
                 font-size: 36px;
             }
             
-            .url-inputs {
+            .file-inputs {
                 grid-template-columns: 1fr;
             }
             
@@ -346,21 +357,21 @@
             
             <div class="theme-config">
                 <h3>班级风貌图片</h3>
-                <div class="url-inputs" id="classroomInputs">
-                    <!-- 班级风貌图片URL输入框将通过JavaScript动态生成 -->
+                <div class="file-inputs" id="classroomInputs">
+                    <!-- 班级风貌图片文件输入框将通过JavaScript动态生成 -->
                 </div>
             </div>
             
             <div class="theme-config">
                 <h3>课后活动图片</h3>
-                <div class="url-inputs" id="activityInputs">
-                    <!-- 课后活动图片URL输入框将通过JavaScript动态生成 -->
+                <div class="file-inputs" id="activityInputs">
+                    <!-- 课后活动图片文件输入框将通过JavaScript动态生成 -->
                 </div>
             </div>
             
             <div class="button-group">
                 <button class="update-btn" onclick="updatePhotos()">更新相册</button>
-                <button class="reset-btn" onclick="resetPhotos()">重置为默认图片</button>
+                <button class="reset-btn" onclick="resetPhotos()">重置相册</button>
             </div>
         </section>
         
@@ -370,19 +381,6 @@
     </div>
 
     <script>
-        // 默认图片URL数组 - 分为两个主题
-        const defaultClassroomUrls = [
-            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-        ];
-        
-        const defaultActivityUrls = [
-            "https://images.unsplash.com/photo-1580087227260-c58a0b2b089f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-        ];
-        
         // 照片标题数组
         const classroomTitles = [
             "课堂学习",
@@ -421,19 +419,19 @@
         
         // 初始化函数
         function initGallery() {
-            // 从本地存储获取图片URL，如果没有则使用默认值
-            let classroomUrls = JSON.parse(localStorage.getItem('classroomPhotos')) || defaultClassroomUrls;
-            let activityUrls = JSON.parse(localStorage.getItem('activityPhotos')) || defaultActivityUrls;
+            // 从本地存储获取图片数据，如果没有则使用空数组
+            let classroomData = JSON.parse(localStorage.getItem('classroomPhotos')) || [];
+            let activityData = JSON.parse(localStorage.getItem('activityPhotos')) || [];
             
             // 渲染相册
-            renderGallery(classroomUrls, activityUrls);
+            renderGallery(classroomData, activityData);
             
-            // 渲染URL输入框
-            renderUrlInputs(classroomUrls, activityUrls);
+            // 渲染文件输入框
+            renderFileInputs(classroomData, activityData);
         }
         
         // 渲染相册
-        function renderGallery(classroomUrls, activityUrls) {
+        function renderGallery(classroomData, activityData) {
             const classroomGrid = document.getElementById('classroomGrid');
             const activityGrid = document.getElementById('activityGrid');
             
@@ -441,18 +439,18 @@
             activityGrid.innerHTML = '';
             
             // 渲染班级风貌照片
-            classroomUrls.forEach((url, index) => {
+            classroomData.forEach((data, index) => {
                 const photoCard = document.createElement('div');
                 photoCard.className = 'photo-card';
                 
                 photoCard.innerHTML = `
-                    <img src="${url}" alt="班级照片 ${index + 1}" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                    <img src="${data.imageData}" alt="${data.title || '班级照片'}">
                     <div class="photo-info">
                         <div>
-                            <h3>${classroomTitles[index] || '班级活动'}</h3>
-                            <p>${classroomDescriptions[index] || '记录班级美好瞬间'}</p>
+                            <h3>${data.title || classroomTitles[index] || '班级活动'}</h3>
+                            <p>${data.description || classroomDescriptions[index] || '记录班级美好瞬间'}</p>
                         </div>
-                        <div class="photo-date">${photoDates[index] || '2023年'}</div>
+                        <div class="photo-date">${data.date || photoDates[index] || '2023年'}</div>
                     </div>
                 `;
                 
@@ -460,18 +458,18 @@
             });
             
             // 渲染课后活动照片
-            activityUrls.forEach((url, index) => {
+            activityData.forEach((data, index) => {
                 const photoCard = document.createElement('div');
                 photoCard.className = 'photo-card';
                 
                 photoCard.innerHTML = `
-                    <img src="${url}" alt="活动照片 ${index + 1}" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                    <img src="${data.imageData}" alt="${data.title || '活动照片'}">
                     <div class="photo-info">
                         <div>
-                            <h3>${activityTitles[index] || '课后活动'}</h3>
-                            <p>${activityDescriptions[index] || '记录活动精彩瞬间'}</p>
+                            <h3>${data.title || activityTitles[index] || '课后活动'}</h3>
+                            <p>${data.description || activityDescriptions[index] || '记录活动精彩瞬间'}</p>
                         </div>
-                        <div class="photo-date">${photoDates[index + 3] || '2023年'}</div>
+                        <div class="photo-date">${data.date || photoDates[index + 3] || '2023年'}</div>
                     </div>
                 `;
                 
@@ -479,66 +477,147 @@
             });
         }
         
-        // 渲染URL输入框
-        function renderUrlInputs(classroomUrls, activityUrls) {
+        // 渲染文件输入框
+        function renderFileInputs(classroomData, activityData) {
             const classroomInputs = document.getElementById('classroomInputs');
             const activityInputs = document.getElementById('activityInputs');
             
             classroomInputs.innerHTML = '';
             activityInputs.innerHTML = '';
             
-            // 渲染班级风貌URL输入框
-            classroomUrls.forEach((url, index) => {
-                const urlInput = document.createElement('div');
-                urlInput.className = 'url-input';
+            // 渲染班级风貌文件输入框
+            for (let i = 0; i < 3; i++) {
+                const fileInput = document.createElement('div');
+                fileInput.className = 'file-input';
                 
-                urlInput.innerHTML = `
-                    <label for="classroomUrl${index}">班级风貌图片 ${index + 1} URL:</label>
-                    <input type="text" id="classroomUrl${index}" value="${url}">
+                fileInput.innerHTML = `
+                    <label for="classroomFile${i}">班级风貌图片 ${i + 1}:</label>
+                    <input type="file" id="classroomFile${i}" accept="image/*">
+                    <input type="text" id="classroomTitle${i}" placeholder="图片标题" value="${classroomData[i] ? classroomData[i].title : ''}">
+                    <input type="text" id="classroomDesc${i}" placeholder="图片描述" value="${classroomData[i] ? classroomData[i].description : ''}">
                 `;
                 
-                classroomInputs.appendChild(urlInput);
-            });
+                classroomInputs.appendChild(fileInput);
+            }
             
-            // 渲染课后活动URL输入框
-            activityUrls.forEach((url, index) => {
-                const urlInput = document.createElement('div');
-                urlInput.className = 'url-input';
+            // 渲染课后活动文件输入框
+            for (let i = 0; i < 3; i++) {
+                const fileInput = document.createElement('div');
+                fileInput.className = 'file-input';
                 
-                urlInput.innerHTML = `
-                    <label for="activityUrl${index}">课后活动图片 ${index + 1} URL:</label>
-                    <input type="text" id="activityUrl${index}" value="${url}">
+                fileInput.innerHTML = `
+                    <label for="activityFile${i}">课后活动图片 ${i + 1}:</label>
+                    <input type="file" id="activityFile${i}" accept="image/*">
+                    <input type="text" id="activityTitle${i}" placeholder="图片标题" value="${activityData[i] ? activityData[i].title : ''}">
+                    <input type="text" id="activityDesc${i}" placeholder="图片描述" value="${activityData[i] ? activityData[i].description : ''}">
                 `;
                 
-                activityInputs.appendChild(urlInput);
-            });
+                activityInputs.appendChild(fileInput);
+            }
         }
         
         // 更新相册图片
         function updatePhotos() {
-            const classroomInputs = document.querySelectorAll('#classroomInputs input');
-            const activityInputs = document.querySelectorAll('#activityInputs input');
+            const classroomFiles = document.querySelectorAll('#classroomInputs input[type="file"]');
+            const activityFiles = document.querySelectorAll('#activityInputs input[type="file"]');
+            const classroomTitles = document.querySelectorAll('#classroomInputs input[type="text"]:nth-of-type(1)');
+            const classroomDescs = document.querySelectorAll('#classroomInputs input[type="text"]:nth-of-type(2)');
+            const activityTitles = document.querySelectorAll('#activityInputs input[type="text"]:nth-of-type(1)');
+            const activityDescs = document.querySelectorAll('#activityInputs input[type="text"]:nth-of-type(2)');
             
-            const newClassroomUrls = Array.from(classroomInputs).map(input => input.value);
-            const newActivityUrls = Array.from(activityInputs).map(input => input.value);
+            // 由于读取文件是异步的，我们需要使用Promise.all来等待所有文件读取完成
+            const promises = [];
             
-            // 保存到本地存储
-            localStorage.setItem('classroomPhotos', JSON.stringify(newClassroomUrls));
-            localStorage.setItem('activityPhotos', JSON.stringify(newActivityUrls));
+            // 读取班级风貌图片
+            const newClassroomData = [];
+            for (let i = 0; i < classroomFiles.length; i++) {
+                promises.push(new Promise((resolve) => {
+                    if (classroomFiles[i].files && classroomFiles[i].files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            newClassroomData.push({
+                                imageData: e.target.result,
+                                title: classroomTitles[i].value,
+                                description: classroomDescs[i].value,
+                                date: photoDates[i] || '2023年'
+                            });
+                            resolve();
+                        };
+                        reader.readAsDataURL(classroomFiles[i].files[0]);
+                    } else {
+                        // 如果没有新文件，则使用原来的数据
+                        const existingData = JSON.parse(localStorage.getItem('classroomPhotos')) || [];
+                        if (existingData[i]) {
+                            newClassroomData.push(existingData[i]);
+                        } else {
+                            // 如果没有数据，添加一个空对象
+                            newClassroomData.push({
+                                imageData: '',
+                                title: classroomTitles[i].value,
+                                description: classroomDescs[i].value,
+                                date: photoDates[i] || '2023年'
+                            });
+                        }
+                        resolve();
+                    }
+                }));
+            }
             
-            // 重新渲染相册
-            renderGallery(newClassroomUrls, newActivityUrls);
+            // 读取课后活动图片
+            const newActivityData = [];
+            for (let i = 0; i < activityFiles.length; i++) {
+                promises.push(new Promise((resolve) => {
+                    if (activityFiles[i].files && activityFiles[i].files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            newActivityData.push({
+                                imageData: e.target.result,
+                                title: activityTitles[i].value,
+                                description: activityDescs[i].value,
+                                date: photoDates[i + 3] || '2023年'
+                            });
+                            resolve();
+                        };
+                        reader.readAsDataURL(activityFiles[i].files[0]);
+                    } else {
+                        // 如果没有新文件，则使用原来的数据
+                        const existingData = JSON.parse(localStorage.getItem('activityPhotos')) || [];
+                        if (existingData[i]) {
+                            newActivityData.push(existingData[i]);
+                        } else {
+                            // 如果没有数据，添加一个空对象
+                            newActivityData.push({
+                                imageData: '',
+                                title: activityTitles[i].value,
+                                description: activityDescs[i].value,
+                                date: photoDates[i + 3] || '2023年'
+                            });
+                        }
+                        resolve();
+                    }
+                }));
+            }
             
-            alert('相册已更新！');
+            // 等待所有图片读取完成
+            Promise.all(promises).then(() => {
+                // 保存到本地存储
+                localStorage.setItem('classroomPhotos', JSON.stringify(newClassroomData));
+                localStorage.setItem('activityPhotos', JSON.stringify(newActivityData));
+                
+                // 重新渲染相册
+                renderGallery(newClassroomData, newActivityData);
+                
+                alert('相册已更新！');
+            });
         }
         
-        // 重置为默认图片
+        // 重置相册
         function resetPhotos() {
-            if (confirm('确定要重置为默认图片吗？')) {
+            if (confirm('确定要重置相册吗？这将清除所有已上传的图片。')) {
                 localStorage.removeItem('classroomPhotos');
                 localStorage.removeItem('activityPhotos');
                 initGallery();
-                alert('已重置为默认图片！');
+                alert('相册已重置！');
             }
         }
         
