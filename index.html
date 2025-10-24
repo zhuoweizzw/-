@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>班级相册 - 本地图片版</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>班级相册 - 我们的青春记忆</title>
     <style>
         * {
             margin: 0;
@@ -13,318 +12,141 @@
         }
         
         body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: linear-gradient(135deg, #a8d8ff 0%, #e6f2ff 100%);
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
             color: #333;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.15;
-            z-index: -1;
+            line-height: 1.6;
+            padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 20px;
         }
         
         header {
             text-align: center;
-            padding: 50px 0 30px;
-            color: #2c3e50;
+            margin-bottom: 40px;
+            padding: 20px;
         }
         
         h1 {
-            font-family: 'Dancing Script', cursive;
             font-size: 72px;
+            font-family: '华文行楷', '楷体', serif;
+            color: #0066cc;
+            text-shadow: 3px 3px 5px rgba(0, 102, 204, 0.3);
             margin-bottom: 20px;
-            color: #1a5276;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            letter-spacing: 2px;
+            animation: fadeInDown 1.5s ease;
+            background: linear-gradient(to right, #0066cc, #00bcd4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .subtitle {
-            font-size: 22px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            color: #2c3e50;
-            font-weight: 300;
-            line-height: 1.6;
-        }
-        
-        .theme-section {
-            margin: 60px 0;
-        }
-        
-        .theme-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 48px;
-            text-align: center;
-            margin-bottom: 40px;
-            color: #1a5276;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .theme-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #1a5276, transparent);
-        }
-        
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-        }
-        
-        .photo-card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-            transition: all 0.4s ease;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .photo-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-        }
-        
-        .photo-card img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-        
-        .photo-card:hover img {
-            transform: scale(1.1);
-        }
-        
-        .photo-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        .photo-info h3 {
-            margin-bottom: 10px;
-            color: #1a5276;
-            font-size: 1.5rem;
-            font-weight: 500;
-        }
-        
-        .photo-info p {
-            color: #566573;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        
-        .photo-date {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-        
-        .config-section {
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 60px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .config-section h2 {
-            margin-bottom: 25px;
-            color: #1a5276;
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 500;
-        }
-        
-        .theme-config {
+            font-size: 24px;
+            color: #666;
             margin-bottom: 30px;
         }
         
-        .theme-config h3 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-            font-size: 1.5rem;
-            border-bottom: 1px solid #ddd;
+        .theme-section {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        h2 {
+            font-size: 36px;
+            color: #0066cc;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px dashed #b3e5fc;
             padding-bottom: 10px;
         }
         
-        .file-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .file-input {
-            margin-bottom: 20px;
-        }
-        
-        .file-input label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-        
-        .file-input input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d5dbdb;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.8);
-        }
-        
-        .file-input input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d5dbdb;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.8);
-            margin-top: 8px;
-        }
-        
-        .file-input input:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-            background: white;
-        }
-        
-        .button-group {
+        .gallery {
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap;
+            justify-content: space-around;
             gap: 20px;
-            margin-top: 30px;
         }
         
-        button {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        .photo-card {
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
         
-        .update-btn {
-            background: linear-gradient(135deg, #3498db 0%, #1a5276 100%);
-            color: white;
+        .photo-card:hover {
+            transform: scale(1.05);
         }
         
-        .update-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .photo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #e0f7fa;
         }
         
-        .reset-btn {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
+        .photo-info {
+            padding: 15px;
+            text-align: center;
         }
         
-        .reset-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .photo-info h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+        
+        .photo-info p {
+            font-size: 14px;
+            color: #666;
         }
         
         footer {
             text-align: center;
-            color: #2c3e50;
-            margin-top: 50px;
-            padding: 30px 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
         }
         
-        @media (max-width: 1024px) {
-            .photo-grid {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 56px;
-            }
-            
-            .theme-title {
-                font-size: 36px;
-            }
-            
-            .file-inputs {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 20px;
-            }
-            
-            .photo-grid {
-                gap: 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
             h1 {
                 font-size: 48px;
             }
             
-            .theme-title {
-                font-size: 32px;
-            }
-            
-            .subtitle {
-                font-size: 18px;
-            }
-            
-            .photo-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .button-group {
+            .gallery {
                 flex-direction: column;
+                align-items: center;
+            }
+            
+            .photo-card {
+                width: 100%;
+                max-width: 400px;
             }
         }
     </style>
@@ -332,297 +154,71 @@
 <body>
     <div class="container">
         <header>
-            <h1>班级相册</h1>
-            <p class="subtitle">记录我们共同度过的美好时光，珍藏每一份珍贵的回忆，让友谊在时光的长河中永恒流淌</p>
+            <h1>青春纪念册</h1>
+            <p class="subtitle">记录我们共同成长的点点滴滴</p>
         </header>
         
-        <!-- 班级风貌主题 -->
         <section class="theme-section">
-            <h2 class="theme-title">班级风貌</h2>
-            <div class="photo-grid" id="classroomGrid">
-                <!-- 班级风貌照片将通过JavaScript动态加载 -->
+            <h2>课堂风貌</h2>
+            <div class="gallery">
+                <div class="photo-card">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGY4ZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjY2Ij5DbGFzc3Jvb20gUGhvdG8gMTwvdGV4dD48L3N2Zz4=" alt="课堂学习" class="photo">
+                    <div class="photo-info">
+                        <h3>认真听讲</h3>
+                        <p>同学们专注听讲，积极思考</p>
+                    </div>
+                </div>
+                
+                <div class="photo-card">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGY4ZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjY2Ij5DbGFzc3Jvb20gUGhvdG8gMjwvdGV4dD48L3N2Zz4=" alt="小组讨论" class="photo">
+                    <div class="photo-info">
+                        <h3>小组讨论</h3>
+                        <p>热烈的小组讨论，思维碰撞</p>
+                    </div>
+                </div>
+                
+                <div class="photo-card">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGY4ZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjY2Ij5DbGFzc3Jvb20gUGhvdG8gMzwvdGV4dD48L3N2Zz4=" alt="课堂展示" class="photo">
+                    <div class="photo-info">
+                        <h3>课堂展示</h3>
+                        <p>自信展示学习成果</p>
+                    </div>
+                </div>
             </div>
         </section>
         
-        <!-- 课后活动主题 -->
         <section class="theme-section">
-            <h2 class="theme-title">课后活动</h2>
-            <div class="photo-grid" id="activityGrid">
-                <!-- 课后活动照片将通过JavaScript动态加载 -->
-            </div>
-        </section>
-        
-        <section class="config-section">
-            <h2>更新相册图片</h2>
-            
-            <div class="theme-config">
-                <h3>班级风貌图片</h3>
-                <div class="file-inputs" id="classroomInputs">
-                    <!-- 班级风貌图片文件输入框将通过JavaScript动态生成 -->
+            <h2>课外活动</h2>
+            <div class="gallery">
+                <div class="photo-card">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGY4ZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjY2Ij5PdXRkb29yIEFjdGl2aXR5IDE8L3RleHQ+PC9zdmc+" alt="运动会" class="photo">
+                    <div class="photo-info">
+                        <h3>运动会风采</h3>
+                        <p>运动场上挥洒汗水，展现青春活力</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="theme-config">
-                <h3>课后活动图片</h3>
-                <div class="file-inputs" id="activityInputs">
-                    <!-- 课后活动图片文件输入框将通过JavaScript动态生成 -->
+                
+                <div class="photo-card">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGY4ZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjY2Ij5PdXRkb29yIEFjdGl2aXR5IDI8L3RleHQ+PC9zdmc+" alt="郊游" class="photo">
+                    <div class="photo-info">
+                        <h3>春日郊游</h3>
+                        <p>亲近自然，享受美好春光</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="button-group">
-                <button class="update-btn" onclick="updatePhotos()">更新相册</button>
-                <button class="reset-btn" onclick="resetPhotos()">重置相册</button>
+                
+                <div class="photo-card">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGY4ZmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjY2Ij5PdXRkb29yIEFjdGl2aXR5IDM8L3RleHQ+PC9zdmc+" alt="文艺表演" class="photo">
+                    <div class="photo-info">
+                        <h3>文艺汇演</h3>
+                        <p>展示才艺，绽放青春光彩</p>
+                    </div>
+                </div>
             </div>
         </section>
         
         <footer>
-            <p>班级相册 © 2023 | 设计：班级技术小组 | 珍藏每一刻美好</p>
+            <p>© 2025 班级相册 | 记录我们的青春时光</p>
         </footer>
     </div>
-
-    <script>
-        // 照片标题数组
-        const classroomTitles = [
-            "课堂学习",
-            "小组讨论",
-            "实验课堂"
-        ];
-        
-        const activityTitles = [
-            "军训风采",
-            "课间活动",
-            "户外拓展"
-        ];
-        
-        // 照片描述数组
-        const classroomDescriptions = [
-            "专注的眼神，认真的态度，我们在知识的海洋中遨游",
-            "思想的碰撞，智慧的火花，我们在讨论中共同成长",
-            "在实验室里，我们一起探索科学的奥秘"
-        ];
-        
-        const activityDescriptions = [
-            "军训场上，我们英姿飒爽，磨练意志，展现青春风采",
-            "课间活动中，我们放松身心，增进友谊，享受快乐时光",
-            "户外活动中，我们学会了团队合作与互助"
-        ];
-        
-        // 照片日期数组
-        const photoDates = [
-            "2023年3月15日",
-            "2023年4月20日",
-            "2023年5月10日",
-            "2023年8月25日",
-            "2023年9月12日",
-            "2023年10月8日"
-        ];
-        
-        // 初始化函数
-        function initGallery() {
-            // 从本地存储获取图片数据，如果没有则使用空数组
-            let classroomData = JSON.parse(localStorage.getItem('classroomPhotos')) || [];
-            let activityData = JSON.parse(localStorage.getItem('activityPhotos')) || [];
-            
-            // 渲染相册
-            renderGallery(classroomData, activityData);
-            
-            // 渲染文件输入框
-            renderFileInputs(classroomData, activityData);
-        }
-        
-        // 渲染相册
-        function renderGallery(classroomData, activityData) {
-            const classroomGrid = document.getElementById('classroomGrid');
-            const activityGrid = document.getElementById('activityGrid');
-            
-            classroomGrid.innerHTML = '';
-            activityGrid.innerHTML = '';
-            
-            // 渲染班级风貌照片
-            classroomData.forEach((data, index) => {
-                const photoCard = document.createElement('div');
-                photoCard.className = 'photo-card';
-                
-                photoCard.innerHTML = `
-                    <img src="${data.imageData}" alt="${data.title || '班级照片'}">
-                    <div class="photo-info">
-                        <div>
-                            <h3>${data.title || classroomTitles[index] || '班级活动'}</h3>
-                            <p>${data.description || classroomDescriptions[index] || '记录班级美好瞬间'}</p>
-                        </div>
-                        <div class="photo-date">${data.date || photoDates[index] || '2023年'}</div>
-                    </div>
-                `;
-                
-                classroomGrid.appendChild(photoCard);
-            });
-            
-            // 渲染课后活动照片
-            activityData.forEach((data, index) => {
-                const photoCard = document.createElement('div');
-                photoCard.className = 'photo-card';
-                
-                photoCard.innerHTML = `
-                    <img src="${data.imageData}" alt="${data.title || '活动照片'}">
-                    <div class="photo-info">
-                        <div>
-                            <h3>${data.title || activityTitles[index] || '课后活动'}</h3>
-                            <p>${data.description || activityDescriptions[index] || '记录活动精彩瞬间'}</p>
-                        </div>
-                        <div class="photo-date">${data.date || photoDates[index + 3] || '2023年'}</div>
-                    </div>
-                `;
-                
-                activityGrid.appendChild(photoCard);
-            });
-        }
-        
-        // 渲染文件输入框
-        function renderFileInputs(classroomData, activityData) {
-            const classroomInputs = document.getElementById('classroomInputs');
-            const activityInputs = document.getElementById('activityInputs');
-            
-            classroomInputs.innerHTML = '';
-            activityInputs.innerHTML = '';
-            
-            // 渲染班级风貌文件输入框
-            for (let i = 0; i < 3; i++) {
-                const fileInput = document.createElement('div');
-                fileInput.className = 'file-input';
-                
-                fileInput.innerHTML = `
-                    <label for="classroomFile${i}">班级风貌图片 ${i + 1}:</label>
-                    <input type="file" id="classroomFile${i}" accept="image/*">
-                    <input type="text" id="classroomTitle${i}" placeholder="图片标题" value="${classroomData[i] ? classroomData[i].title : ''}">
-                    <input type="text" id="classroomDesc${i}" placeholder="图片描述" value="${classroomData[i] ? classroomData[i].description : ''}">
-                `;
-                
-                classroomInputs.appendChild(fileInput);
-            }
-            
-            // 渲染课后活动文件输入框
-            for (let i = 0; i < 3; i++) {
-                const fileInput = document.createElement('div');
-                fileInput.className = 'file-input';
-                
-                fileInput.innerHTML = `
-                    <label for="activityFile${i}">课后活动图片 ${i + 1}:</label>
-                    <input type="file" id="activityFile${i}" accept="image/*">
-                    <input type="text" id="activityTitle${i}" placeholder="图片标题" value="${activityData[i] ? activityData[i].title : ''}">
-                    <input type="text" id="activityDesc${i}" placeholder="图片描述" value="${activityData[i] ? activityData[i].description : ''}">
-                `;
-                
-                activityInputs.appendChild(fileInput);
-            }
-        }
-        
-        // 更新相册图片
-        function updatePhotos() {
-            const classroomFiles = document.querySelectorAll('#classroomInputs input[type="file"]');
-            const activityFiles = document.querySelectorAll('#activityInputs input[type="file"]');
-            const classroomTitles = document.querySelectorAll('#classroomInputs input[type="text"]:nth-of-type(1)');
-            const classroomDescs = document.querySelectorAll('#classroomInputs input[type="text"]:nth-of-type(2)');
-            const activityTitles = document.querySelectorAll('#activityInputs input[type="text"]:nth-of-type(1)');
-            const activityDescs = document.querySelectorAll('#activityInputs input[type="text"]:nth-of-type(2)');
-            
-            // 由于读取文件是异步的，我们需要使用Promise.all来等待所有文件读取完成
-            const promises = [];
-            
-            // 读取班级风貌图片
-            const newClassroomData = [];
-            for (let i = 0; i < classroomFiles.length; i++) {
-                promises.push(new Promise((resolve) => {
-                    if (classroomFiles[i].files && classroomFiles[i].files[0]) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            newClassroomData.push({
-                                imageData: e.target.result,
-                                title: classroomTitles[i].value,
-                                description: classroomDescs[i].value,
-                                date: photoDates[i] || '2023年'
-                            });
-                            resolve();
-                        };
-                        reader.readAsDataURL(classroomFiles[i].files[0]);
-                    } else {
-                        // 如果没有新文件，则使用原来的数据
-                        const existingData = JSON.parse(localStorage.getItem('classroomPhotos')) || [];
-                        if (existingData[i]) {
-                            newClassroomData.push(existingData[i]);
-                        } else {
-                            // 如果没有数据，添加一个空对象
-                            newClassroomData.push({
-                                imageData: '',
-                                title: classroomTitles[i].value,
-                                description: classroomDescs[i].value,
-                                date: photoDates[i] || '2023年'
-                            });
-                        }
-                        resolve();
-                    }
-                }));
-            }
-            
-            // 读取课后活动图片
-            const newActivityData = [];
-            for (let i = 0; i < activityFiles.length; i++) {
-                promises.push(new Promise((resolve) => {
-                    if (activityFiles[i].files && activityFiles[i].files[0]) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            newActivityData.push({
-                                imageData: e.target.result,
-                                title: activityTitles[i].value,
-                                description: activityDescs[i].value,
-                                date: photoDates[i + 3] || '2023年'
-                            });
-                            resolve();
-                        };
-                        reader.readAsDataURL(activityFiles[i].files[0]);
-                    } else {
-                        // 如果没有新文件，则使用原来的数据
-                        const existingData = JSON.parse(localStorage.getItem('activityPhotos')) || [];
-                        if (existingData[i]) {
-                            newActivityData.push(existingData[i]);
-                        } else {
-                            // 如果没有数据，添加一个空对象
-                            newActivityData.push({
-                                imageData: '',
-                                title: activityTitles[i].value,
-                                description: activityDescs[i].value,
-                                date: photoDates[i + 3] || '2023年'
-                            });
-                        }
-                        resolve();
-                    }
-                }));
-            }
-            
-            // 等待所有图片读取完成
-            Promise.all(promises).then(() => {
-                // 保存到本地存储
-                localStorage.setItem('classroomPhotos', JSON.stringify(newClassroomData));
-                localStorage.setItem('activityPhotos', JSON.stringify(newActivityData));
-                
-                // 重新渲染相册
-                renderGallery(newClassroomData, newActivityData);
-                
-                alert('相册已更新！');
-            });
-        }
-        
-        // 重置相册
-        function resetPhotos() {
-            if (confirm('确定要重置相册吗？这将清除所有已上传的图片。')) {
-                localStorage.removeItem('classroomPhotos');
-                localStorage.removeItem('activityPhotos');
-                initGallery();
-                alert('相册已重置！');
-            }
-        }
-        
-        // 页面加载完成后初始化相册
-        document.addEventListener('DOMContentLoaded', initGallery);
-    </script>
 </body>
 </html>
