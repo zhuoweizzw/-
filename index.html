@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>班级相册 - 美好回忆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #a8d8ff 0%, #e6f2ff 100%);
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 50px 0 30px;
+            color: #2c3e50;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 72px;
+            margin-bottom: 20px;
+            color: #1a5276;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #2c3e50;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+        
+        .theme-section {
+            margin: 60px 0;
+        }
+        
+        .theme-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a5276;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .theme-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #1a5276, transparent);
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .photo-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .photo-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .photo-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .photo-info h3 {
+            margin-bottom: 10px;
+            color: #1a5276;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .photo-info p {
+            color: #566573;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .photo-date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        .config-section {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 60px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .config-section h2 {
+            margin-bottom: 25px;
+            color: #1a5276;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+        
+        .theme-config {
+            margin-bottom: 30px;
+        }
+        
+        .theme-config h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .url-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .url-input {
+            margin-bottom: 20px;
+        }
+        
+        .url-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        .url-input input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #d5dbdb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .url-input input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            background: white;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .update-btn {
+            background: linear-gradient(135deg, #3498db 0%, #1a5276 100%);
+            color: white;
+        }
+        
+        .update-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .reset-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 50px;
+            padding: 30px 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 1024px) {
+            .photo-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 56px;
+            }
+            
+            .theme-title {
+                font-size: 36px;
+            }
+            
+            .url-inputs {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .photo-grid {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 48px;
+            }
+            
+            .theme-title {
+                font-size: 32px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+            }
+            
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>班级相册</h1>
+            <p class="subtitle">记录我们共同度过的美好时光，珍藏每一份珍贵的回忆，让友谊在时光的长河中永恒流淌</p>
+        </header>
+        
+        <!-- 班级风貌主题 -->
+        <section class="theme-section">
+            <h2 class="theme-title">班级风貌</h2>
+            <div class="photo-grid" id="classroomGrid">
+                <!-- 班级风貌照片将通过JavaScript动态加载 -->
+            </div>
+        </section>
+        
+        <!-- 课后活动主题 -->
+        <section class="theme-section">
+            <h2 class="theme-title">课后活动</h2>
+            <div class="photo-grid" id="activityGrid">
+                <!-- 课后活动照片将通过JavaScript动态加载 -->
+            </div>
+        </section>
+        
+        <section class="config-section">
+            <h2>更新相册图片</h2>
+            
+            <div class="theme-config">
+                <h3>班级风貌图片</h3>
+                <div class="url-inputs" id="classroomInputs">
+                    <!-- 班级风貌图片URL输入框将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="theme-config">
+                <h3>课后活动图片</h3>
+                <div class="url-inputs" id="activityInputs">
+                    <!-- 课后活动图片URL输入框将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="update-btn" onclick="updatePhotos()">更新相册</button>
+                <button class="reset-btn" onclick="resetPhotos()">重置为默认图片</button>
+            </div>
+        </section>
+        
+        <footer>
+            <p>班级相册 © 2023 | 设计：班级技术小组 | 珍藏每一刻美好</p>
+        </footer>
+    </div>
+
+    <script>
+        // 默认图片URL数组 - 分为两个主题
+        const defaultClassroomUrls = [
+            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+        ];
+        
+        const defaultActivityUrls = [
+            "https://images.unsplash.com/photo-1580087227260-c58a0b2b089f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+        ];
+        
+        // 照片标题数组
+        const classroomTitles = [
+            "课堂学习",
+            "小组讨论",
+            "实验课堂"
+        ];
+        
+        const activityTitles = [
+            "军训风采",
+            "课间活动",
+            "户外拓展"
+        ];
+        
+        // 照片描述数组
+        const classroomDescriptions = [
+            "专注的眼神，认真的态度，我们在知识的海洋中遨游",
+            "思想的碰撞，智慧的火花，我们在讨论中共同成长",
+            "在实验室里，我们一起探索科学的奥秘"
+        ];
+        
+        const activityDescriptions = [
+            "军训场上，我们英姿飒爽，磨练意志，展现青春风采",
+            "课间活动中，我们放松身心，增进友谊，享受快乐时光",
+            "户外活动中，我们学会了团队合作与互助"
+        ];
+        
+        // 照片日期数组
+        const photoDates = [
+            "2023年3月15日",
+            "2023年4月20日",
+            "2023年5月10日",
+            "2023年8月25日",
+            "2023年9月12日",
+            "2023年10月8日"
+        ];
+        
+        // 初始化函数
+        function initGallery() {
+            // 从本地存储获取图片URL，如果没有则使用默认值
+            let classroomUrls = JSON.parse(localStorage.getItem('classroomPhotos')) || defaultClassroomUrls;
+            let activityUrls = JSON.parse(localStorage.getItem('activityPhotos')) || defaultActivityUrls;
+            
+            // 渲染相册
+            renderGallery(classroomUrls, activityUrls);
+            
+            // 渲染URL输入框
+            renderUrlInputs(classroomUrls, activityUrls);
+        }
+        
+        // 渲染相册
+        function renderGallery(classroomUrls, activityUrls) {
+            const classroomGrid = document.getElementById('classroomGrid');
+            const activityGrid = document.getElementById('activityGrid');
+            
+            classroomGrid.innerHTML = '';
+            activityGrid.innerHTML = '';
+            
+            // 渲染班级风貌照片
+            classroomUrls.forEach((url, index) => {
+                const photoCard = document.createElement('div');
+                photoCard.className = 'photo-card';
+                
+                photoCard.innerHTML = `
+                    <img src="${url}" alt="班级照片 ${index + 1}" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                    <div class="photo-info">
+                        <div>
+                            <h3>${classroomTitles[index] || '班级活动'}</h3>
+                            <p>${classroomDescriptions[index] || '记录班级美好瞬间'}</p>
+                        </div>
+                        <div class="photo-date">${photoDates[index] || '2023年'}</div>
+                    </div>
+                `;
+                
+                classroomGrid.appendChild(photoCard);
+            });
+            
+            // 渲染课后活动照片
+            activityUrls.forEach((url, index) => {
+                const photoCard = document.createElement('div');
+                photoCard.className = 'photo-card';
+                
+                photoCard.innerHTML = `
+                    <img src="${url}" alt="活动照片 ${index + 1}" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                    <div class="photo-info">
+                        <div>
+                            <h3>${activityTitles[index] || '课后活动'}</h3>
+                            <p>${activityDescriptions[index] || '记录活动精彩瞬间'}</p>
+                        </div>
+                        <div class="photo-date">${photoDates[index + 3] || '2023年'}</div>
+                    </div>
+                `;
+                
+                activityGrid.appendChild(photoCard);
+            });
+        }
+        
+        // 渲染URL输入框
+        function renderUrlInputs(classroomUrls, activityUrls) {
+            const classroomInputs = document.getElementById('classroomInputs');
+            const activityInputs = document.getElementById('activityInputs');
+            
+            classroomInputs.innerHTML = '';
+            activityInputs.innerHTML = '';
+            
+            // 渲染班级风貌URL输入框
+            classroomUrls.forEach((url, index) => {
+                const urlInput = document.createElement('div');
+                urlInput.className = 'url-input';
+                
+                urlInput.innerHTML = `
+                    <label for="classroomUrl${index}">班级风貌图片 ${index + 1} URL:</label>
+                    <input type="text" id="classroomUrl${index}" value="${url}">
+                `;
+                
+                classroomInputs.appendChild(urlInput);
+            });
+            
+            // 渲染课后活动URL输入框
+            activityUrls.forEach((url, index) => {
+                const urlInput = document.createElement('div');
+                urlInput.className = 'url-input';
+                
+                urlInput.innerHTML = `
+                    <label for="activityUrl${index}">课后活动图片 ${index + 1} URL:</label>
+                    <input type="text" id="activityUrl${index}" value="${url}">
+                `;
+                
+                activityInputs.appendChild(urlInput);
+            });
+        }
+        
+        // 更新相册图片
+        function updatePhotos() {
+            const classroomInputs = document.querySelectorAll('#classroomInputs input');
+            const activityInputs = document.querySelectorAll('#activityInputs input');
+            
+            const newClassroomUrls = Array.from(classroomInputs).map(input => input.value);
+            const newActivityUrls = Array.from(activityInputs).map(input => input.value);
+            
+            // 保存到本地存储
+            localStorage.setItem('classroomPhotos', JSON.stringify(newClassroomUrls));
+            localStorage.setItem('activityPhotos', JSON.stringify(newActivityUrls));
+            
+            // 重新渲染相册
+            renderGallery(newClassroomUrls, newActivityUrls);
+            
+            alert('相册已更新！');
+        }
+        
+        // 重置为默认图片
+        function resetPhotos() {
+            if (confirm('确定要重置为默认图片吗？')) {
+                localStorage.removeItem('classroomPhotos');
+                localStorage.removeItem('activityPhotos');
+                initGallery();
+                alert('已重置为默认图片！');
+            }
+        }
+        
+        // 页面加载完成后初始化相册
+        document.addEventListener('DOMContentLoaded', initGallery);
+    </script>
+</body>
+</html>
